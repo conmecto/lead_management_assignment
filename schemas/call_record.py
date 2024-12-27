@@ -2,17 +2,15 @@ from pydantic import BaseModel
 from typing import Optional
 
 class CallRecordCreate(BaseModel):
-    kam_id: int
-    lead_id: int
     contact_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class EndCallRecord(BaseModel):
-    is_order_placed: bool
-    order_value: Optional[int]
-    is_lead_lost: Optional[bool]
+    is_order_placed: Optional[bool] = False 
+    order_value: Optional[int] = None
+    is_lead_lost: Optional[bool] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True

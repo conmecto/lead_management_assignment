@@ -1,9 +1,8 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from models.lead import Lead
-from repositories.lead import LeadRepository
-from repositories.lead_call_plan import LeadCallPlanRepository
-from schemas.lead import LeadCreate
+from models import Lead
+from repositories import LeadRepository, LeadCallPlanRepository
+from schemas import LeadCreate
 from config.logger import logger
 
 class LeadService:
@@ -12,10 +11,11 @@ class LeadService:
         self.lead_repo = LeadRepository(db_session)
         self.lead_call_plan_repo = LeadCallPlanRepository(db_session)
 
-    def create_lead(self, lead: LeadCreate) -> Lead:
+    def create_lead(self, kam_id: int, lead: LeadCreate) -> Lead:
         try:
             with self.db_session.begin():
                 lead_dict = lead.model_dump()
+                lead_dict["kam_id"] = kam_id
                 lead = self.lead_repo.create(lead_dict)
                 if not lead:
                     raise ValueError("Lead creation failed")
@@ -26,20 +26,21 @@ class LeadService:
                 lead_call_plan = self.lead_call_plan_repo.create(lead_call_plan_data)
                 if not lead_call_plan:
                     raise ValueError("Lead call plan creation failed")
-                return lead
+                return {
+                    "lead_id": lead.id
+                }
         except Exception as e:
             self.db_session.rollback()
-            logger.error(f"Error creating lead: {str(e)}")
-            raise HTTPException(status_code=500, detail="Internal Server Error")
+            logger.error("Error creating lead: %s", str(e), stack_info=True)
+            raise HTTPException(500, "Internal Server Error")
 
-    def track_lead_status(self, lead_id: int) -> Lead:
-        lead = self.lead_repo.get(lead_id)
+    def track_lead_status(self, kam_id: int, lead_id: int) -> Lead:
+        lead = self.lead_repo.get(kam_id, lead_id)
         if not lead:
-            raise HTTPException(status_code=404, detail="Lead not found")
+            raise HTTPException(404, "Lead not found")
         return lead
     
     def get_leads_requiring_calls(self, kam_id: int, page: int, per_page: int):
-        limit = page
         offset = (page - 1) * per_page
-        leads = self.lead_call_plan_repo.get_leads_by_call_frequency_days(kam_id, per_page, limit, offset)
+        leads = self.lead_repo.get_leads_by_call_frequency_days(kam_id, limit=per_page, offset=offset)
         return leads

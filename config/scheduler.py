@@ -1,9 +1,9 @@
+import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from sqlalchemy.orm import Session
-from models.lead_call_plan import LeadCallPlan
+from models import LeadCallPlan
 from datetime import datetime
-import pytz
 
 class CallPlanScheduler:
     def __init__(self, db_session: Session):

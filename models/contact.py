@@ -1,8 +1,9 @@
+import pytz
 from sqlalchemy import Column, Integer, String, DateTime, Enum, ForeignKey, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from utils.enums import ContactRole
-from config.database import Base
+from .base import Base
 
 class Contact(Base):
     __tablename__ = 'contacts'
@@ -13,7 +14,7 @@ class Contact(Base):
     email = Column(String, nullable=False)
     phone = Column(String, nullable=False)
     is_primary = Column(Boolean, default=False, nullable=False)
-    created_at = Column(DateTime, default=datetime.now(datetime.timezone.utc), nullable=False)
+    created_at = Column(DateTime, default=datetime.now(pytz.UTC), nullable=False)
     deleted_at = Column(DateTime, nullable=True)
     lead_id = Column(Integer, ForeignKey('leads.id'), nullable=False)
     

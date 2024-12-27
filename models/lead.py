@@ -1,8 +1,9 @@
+import pytz
 from sqlalchemy import Column, Integer, String, DateTime, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from utils.enums import LeadStatus, LeadType
-from config.database import Base
+from .base import Base
 
 class Lead(Base):
     __tablename__ = 'leads'
@@ -14,7 +15,7 @@ class Lead(Base):
     city = Column(String, nullable=False)
     state = Column(String, nullable=False)
     status = Column(Enum(LeadStatus), default=LeadStatus.NEW, nullable=False)
-    created_at = Column(DateTime, default=datetime.now(datetime.timezone.utc), nullable=False)
+    created_at = Column(DateTime, default=datetime.now(pytz.UTC), nullable=False)
     deleted_at = Column(DateTime, nullable=True)
     kam_id = Column(Integer, ForeignKey('key_account_managers.id'), nullable=False)
     
