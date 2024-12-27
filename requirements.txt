@@ -7,3 +7,4 @@ pytz==2024.1
 bcrypt==4.2.0
 pydantic[email]
 pyjwt
+psycopg2==2.9.9
