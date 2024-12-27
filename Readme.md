@@ -57,6 +57,7 @@ To start the server, run the following command:
 ```sh
 # uvicorn main:app --reload
 python3 main.py 
+```
 
 
 ### Running unti test
