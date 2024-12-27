@@ -55,5 +55,11 @@ This project is a FastAPI-based server for managing leads and their contacts. Th
 To start the server, run the following command:
 
 ```sh
-python3 main.py 
 # uvicorn main:app --reload
+python3 main.py 
+
+
+### Running unti test
+
+```sh
+pytest tests.{file_name} 
