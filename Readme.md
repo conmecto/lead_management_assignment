@@ -60,7 +60,16 @@ python3 main.py
 ```
 
 
-### Running unti test
+### Running unit test
 
 ```sh
 pytest tests.{file_name} 
+```
+
+### Link for API doc
+
+```
+https://perpetual-stingray-b1f.notion.site/Lead-Management-System-16aee43ee1b08009b27df08086a33c17
+
+https://documenter.getpostman.com/view/33040952/2sAYJ6CfE2
+```
