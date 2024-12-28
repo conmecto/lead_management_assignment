@@ -24,7 +24,7 @@ This project is a FastAPI-based server for managing leads and their contacts. Th
 2. **Create a virtual environment:**
 
     ```sh
-    python -m venv venv
+    python3 -m venv lead_management_env
     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
     ```
 
