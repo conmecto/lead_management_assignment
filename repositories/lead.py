@@ -73,7 +73,7 @@ class LeadRepository(BaseRepository):
                 Lead.status.in_([LeadStatus.NEGOTIATING, LeadStatus.CONVERTED])
             )
             .group_by(Lead.id, Lead.status)
-            .order_by(avg_order_value)
+            .order_by(desc("performance"))
         )
         result = query.all()
         formatted_result = [
@@ -82,8 +82,8 @@ class LeadRepository(BaseRepository):
                 "status": row.status,
                 "order_placed_count": row.order_placed_count,
                 "call_record_count": row.call_record_count,
-                "order_placed_ratio": row.order_placed_ratio,
-                "avg_order_value": row.avg_order_value,
+                "order_placed_ratio": round(row.order_placed_ratio, 2) if row.order_placed_ratio else row.order_placed_ratio,
+                "avg_order_value": round(row.avg_order_value, 2) if row.avg_order_value else row.avg_order_value,
                 "performance": row.performance,
             }
             for row in result

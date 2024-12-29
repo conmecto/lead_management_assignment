@@ -44,7 +44,7 @@ class CallRecordService:
         end_call_data_dict = end_call_data.model_dump(exclude_unset=True)
         update_call_record = {"ended_at": datetime.now(pytz.UTC)}
         if "is_order_placed" in end_call_data_dict:
-            update_call_record["order_value"] = end_call_data_dict["order_value"]
+            update_call_record["is_order_placed"] = end_call_data_dict["is_order_placed"]
         if "order_value" in end_call_data_dict:
             update_call_record["order_value"] = end_call_data_dict["order_value"]
         call_record = self.call_record_repo.update(call_record_id, kam_id, update_call_record)
